@@ -2,31 +2,42 @@ package br.ufpe.cin.android.calculadora
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.* //Add references to all iD's created
 
 class MainActivity : AppCompatActivity() {
+
+    private val INVALID_EXPRESSION = "Invalid Expression.";
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         //Set all buttons listeners (except the equal button)
-        buttonListener()
+        buttonListener();
 
         //Display the result
-        equalEvaluate()
+        equalEvaluate();
+
 
     }
 
     private fun equalEvaluate() {
         btn_Equal.setOnClickListener {
-            //Store the result of eval function into variable
-            val result = eval(text_calc.text.toString());
 
-            //Set to text info the result
-            text_info.setText(result.toString());
+            try {
+                //Store the result of eval function into variable
+                val result = eval(text_calc.text.toString());
 
-            //Clear the editText field
+                //Set to text info the result
+                text_info.setText(result.toString());
+            }
+            // Handle the error showing the toast message.
+            catch (e: RuntimeException){
+                Toast.makeText(applicationContext,INVALID_EXPRESSION, Toast.LENGTH_SHORT).show();
+            }
+
+            //Always Clear the editText field
             text_calc.text.clear();
         }
     }
