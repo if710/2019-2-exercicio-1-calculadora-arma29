@@ -8,7 +8,10 @@ import kotlinx.android.synthetic.main.activity_main.* //Add references to all iD
 class MainActivity : AppCompatActivity() {
 
     private val INVALID_EXPRESSION = "Invalid Expression.";
+    private val STRING_KEY = "savedText";
 
+    // In this case, we don't need to call the method onRestoreInstanceState
+    // As the bundle object is already passed, we can restore the dynamic state directly
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -19,7 +22,33 @@ class MainActivity : AppCompatActivity() {
         //Display the result
         equalEvaluate();
 
+        //Store the text
+        textRestore(savedInstanceState);
 
+    }
+
+    private fun textRestore(savedInstanceState: Bundle?) {
+        if (savedInstanceState != null) {
+            // Restore the the variable stored in Bundle object
+            // Will return the value of key-pair
+            val userText = savedInstanceState.getCharSequence(STRING_KEY);
+
+            // Update the view
+            text_info.setText(userText.toString());
+        }
+    }
+
+    // Necessary method to save the state when configuration changes
+    override fun onSaveInstanceState(outState: Bundle) {
+        // Necessary call
+        super.onSaveInstanceState(outState)
+
+        // Store the currently value in text view on variable
+        val userText = text_info.text;
+
+        // Store the variable to Bundle object
+        // Saved as key-value pair
+        outState?.putCharSequence(STRING_KEY, userText);
     }
 
     private fun equalEvaluate() {
