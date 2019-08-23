@@ -10,12 +10,30 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Some buttons only work with constraint layout
+        //Set all buttons listeners (except the equal button)
         buttonListener()
+
+        //Display the result
+        equalEvaluate()
 
     }
 
+    private fun equalEvaluate() {
+        btn_Equal.setOnClickListener {
+            //Store the result of eval function into variable
+            val result = eval(text_calc.text.toString());
+
+            //Set to text info the result
+            text_info.setText(result.toString());
+
+            //Clear the editText field
+            text_calc.text.clear();
+        }
+    }
+
     private fun buttonListener() {
+        //Appends the corresponding button to editText
+
         // region First Row
         btn_7.setOnClickListener {
             text_calc.append("7");
@@ -67,9 +85,6 @@ class MainActivity : AppCompatActivity() {
         }
         btn_0.setOnClickListener {
             text_calc.append("0");
-        }
-        btn_Equal.setOnClickListener {
-            text_calc.append("=");
         }
         btn_Add.setOnClickListener {
             text_calc.append("+");
